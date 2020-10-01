@@ -158,7 +158,6 @@ names(colors) <- celltype_levels
 
 Feature metadata contains genomic information for both RNA expression and ATAC peaks
 ```{r}
-# feature_metadata <- fread("/Users/ricard/data/10x_rna_atac/PBMC/original/filtered_feature_bc_matrix/features.tsv.gz") %>%
 feature_metadata <- fread("ftp://ftp.ebi.ac.uk/pub/databases/mofa/10x_rna_atac_vignette/filtered_feature_bc_matrix/features.tsv.gz") %>%
   setnames(c("ens_id","gene","view","chr","start","end"))
 ```
@@ -169,24 +168,24 @@ feature_metadata.rna <- feature_metadata[view=="Gene Expression"]
 head(feature_metadata.rna,n=3)
 ```
 
-Fetch ATAC metadata and classify peaks into promoter-overlapping and distal
+Fetch ATAC metadata
 ```{r}
 feature_metadata.atac <- feature_metadata[view=="Peaks"] %>% 
   .[,ens_id:=NULL] %>% setnames("gene","peak")
 head(feature_metadata.atac,n=3)
 ```
-
-```{r, echo=FALSE}
-# foo <- fread("ftp://ftp.ebi.ac.uk/pub/databases/mofa/10x_rna_atac_vignette/atac_peak_annotation.tsv") %>%
-foo <- fread("/Users/ricard/data/10x_rna_atac/PBMC/original/old/atac_peak_annotation.tsv") %>%
+Classify peaks into promoter-overlapping and distal
+```{r}
+foo <- fread("ftp://ftp.ebi.ac.uk/pub/databases/mofa/10x_rna_atac_vignette/atac_peak_annotation.tsv") %>%
   .[,c("peak","peak_type")] %>%
   .[peak_type%in%c("distal", "promoter")]
-feature_metadata.atac <- feature_metadata.atac %>% merge(foo,by="peak",all.x=TRUE)
-```
 
-```{r}
+feature_metadata.atac <- feature_metadata.atac %>% 
+  merge(foo,by="peak",all.x=TRUE)
+
 table(feature_metadata.atac$peak_type)
 ```
+
 
 # Parse Seurat object
 
