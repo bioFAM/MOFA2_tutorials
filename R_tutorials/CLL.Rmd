@@ -52,11 +52,6 @@ The full meta data can be obtained from the Bioconductor package `BloodCancerMul
 CLL_metadata <- fread("ftp://ftp.ebi.ac.uk/pub/databases/mofa/cll_vignette/sample_metadata.txt")
 ```
 
-<!-- Note that some patients lack the clinical information -->
-<!-- ```{r} -->
-<!-- table(!is.na(CLL_metadata$died)) -->
-<!-- ``` -->
-
 # Create the MOFA obejct and train the model
 
 Create the MOFA object
@@ -120,7 +115,6 @@ Important arguments:
 
 ```{r}
 train_opts <- get_default_training_options(MOFAobject)
-train_opts$convergence_mode <- "slow"
 train_opts$seed <- 42
 
 train_opts
@@ -185,10 +179,6 @@ dim(MOFAobject@expectations$W$mRNA)
 
 The sample metadata must be provided as a data.frame and it must contain a column `sample` with the sample IDs. Make sure that the samples in the metadata match the samples in the model
 ```{r}
-# Sanity check
-# stopifnot(all(sort(CLL_metadata$sample)==sort(unlist(samples_names(MOFAobject)))))
-
-# Add sample metadata to the model
 samples_metadata(MOFAobject) <- CLL_metadata
 ```
 
@@ -229,26 +219,6 @@ In this data set, using only K=15 factors the model explains up to ~54% of the v
 ```{r}
 plot_variance_explained(MOFAobject, plot_total = TRUE)[[2]]
 ```
-
-<!-- ### Plot variance explained for individual features -->
-
-<!-- If we are interested in some specific features, we can explore the the variance explained by the different MOFA factors for individual features: -->
-
-<!-- Let's select some drugs -->
-<!-- ```{r} -->
-<!-- drugs <- MOFA2::features_names(MOFAobject)$Drugs -->
-<!-- features2plot <- drugs[grep("D_002|D_001",drugs)] -->
-<!-- ``` -->
-
-<!-- Plot variance explained by each factor: you can see that for some drugs such as D_002, the sources of variation captured by Factor 1 and Factor 2 explain as much as 30% each of its response. -->
-<!-- ```{r} -->
-<!-- plot_variance_explained_per_feature(MOFAobject,  -->
-<!--   features = features2plot, -->
-<!--   split_by_factor = TRUE, -->
-<!--   factors = 1:5, -->
-<!--   view = "Drugs" -->
-<!-- ) -->
-<!-- ``` -->
 
 # Characterisation of Factor 1
 
