@@ -18,7 +18,7 @@ vignette: >
 ---
   
 # Introduction
-This vignette show how to use MOFA+ on the bulk multi-omics data set that was used in the [first publication of MOFA](https://msb.embopress.org/cgi/doi/10.15252/msb.20178124) and the original vignette of the [MOFA package](https://bioconductor.org/packages/release/bioc/vignettes/MOFA/inst/doc/MOFA_example_CLL.html).  
+This vignette shows how to use MOFA+ on the bulk multi-omics data set that was used in the [first publication of MOFA](https://msb.embopress.org/cgi/doi/10.15252/msb.20178124) and the original vignette of the [MOFA package](https://bioconductor.org/packages/release/bioc/vignettes/MOFA/inst/doc/MOFA_example_CLL.html).  
 
 Briefly, the data consists of four omics including DNA methylation, RNA-seq, somatic mutations and drug response data from blood for N=200 patients with Chronic Lymphocytic Leukemia (CLL). The data set is explained in detail [in this article](https://www.jci.org/articles/view/93801) and is publicly available [here](http://bioconductor.org/packages/release/data/experiment/html/BloodCancerMultiOmics2017.html)
   
@@ -92,8 +92,8 @@ Important arguments:
 
 - **num_factors**: number of factors
 - **likelihoods**: likelihood per view (options are "gaussian", "poisson", "bernoulli"). By default they are inferred automatically.
-- **spikeslab_factors**: use spike-slab sparsity prior in the factors? default is `FALSE`.
-- **spikeslab_weights**: use spike-slab sparsity prior in the weights? default is `TRUE`.
+- **spikeslab_factors**: use spike-slab sparsity prior in the factors? Default is `FALSE`.
+- **spikeslab_weights**: use spike-slab sparsity prior in the weights? Default is `TRUE`.
 - **ard_factors**: use ARD prior in the factors? Default is `TRUE` if using multiple groups.
 - **ard_weights**: use ARD prior in the weights? Default is `TRUE` if using multiple views.
 
@@ -257,7 +257,7 @@ plot_factor(MOFAobject,
 ## Plot feature weights
 
 **How do we interpret the weights?**  
-The weights provide a score for each feature on each factor. Features with no association with the corresponding factor are expected to have values close to zero, whereas features with strong association with the factor are expected to have large absolute values. The sign of the weights indicates the direction of the effect: a positive weights indicates that the feature has higher levels in the cells with positive factor values, and vice-versa.  
+The weights provide a score for each feature on each factor. Features with no association with the corresponding factor are expected to have values close to zero, whereas features with strong association with the factor are expected to have large absolute values. The sign of the weights indicates the direction of the effect: a positive weight indicates that the feature has higher levels in the cells with positive factor values, and vice-versa.  
 
 ### Plot feature weights for somatic mutations
 
@@ -285,7 +285,7 @@ plot_top_weights(MOFAobject,
 ```
 
 
-IGHV has a positve weight. This means that samples with positive Factor 1 values have IGHV mutation whereas samples with negative Factor 1 values do not have the IGHV mutation. To confirm this, let's plot the Factor values and colour the IGHV mutation status.  
+IGHV has a positive weight. This means that samples with positive Factor 1 values have IGHV mutation whereas samples with negative Factor 1 values do not have the IGHV mutation. To confirm this, let's plot the Factor values and colour the IGHV mutation status.  
 <!-- Note that some samples are missing the IGHV status because of missing somatic mutation data... should we try to use the model to predict it?? We will play with this later. -->
 ```{r}
 plot_factor(MOFAobject, 
@@ -438,7 +438,7 @@ p <- p +
 print(p)
 ```
 
-This plot is extremely important. It classifies the patients into four different subgroups depending on their (multi-omic) molecular profile. As shown in the analysis above, both factors are associated with differences in the drug response assay they are are strongly linked to somatic mutations (IGHV and trisomy12) that are easy to profile in clinical practice. This is fantastic for the aim of personalised medicine. 
+This plot is extremely important. It classifies the patients into four different subgroups depending on their (multi-omic) molecular profile. As shown in the analysis above, both factors are associated with differences in the drug response assay they are strongly linked to somatic mutations (IGHV and trisomy12) that are easy to profile in clinical practice. This is fantastic for the aim of personalised medicine. 
 
 # Prediction of clinical subgroups
 
@@ -520,7 +520,7 @@ print(p)
 
 # Gene set enrichment analysis (GSEA)
 
-In addition to exploring the individual weights for each factor, we can use enrichment analysis to look for signiificant associations of factors to genesets. Here, we use the Reactome genesets for illustrations, which is contained in the `MOFAdata` package. For more details on how the GSEA works we encourage the users to read the [GSEA vignette](https://raw.githack.com/bioFAM/MOFA2/tutorials_extended/GSEA.html)
+In addition to exploring the individual weights for each factor, we can use enrichment analysis to look for significant associations of factors to genesets. Here, we use the Reactome genesets for illustrations, which is contained in the `MOFAdata` package. For more details on how the GSEA works we encourage the users to read the [GSEA vignette](https://raw.githack.com/bioFAM/MOFA2/tutorials_extended/GSEA.html)
 
 
 ## Load Reactome gene set annotations.  
@@ -587,7 +587,7 @@ Let's plot the GSEA results for Factor 5. It seems that this Factor is capturing
 plot_enrichment(res.positive, factor = 5, max.pathways = 15)
 ```
 
-It is always advised to not rely only on the p-values and to visualise which genes are driving the enrichment within each pathways. There are problematic cases where a single gene is driving the enrichment results in very small pathways.
+It is always advised to not rely only on the p-values and to visualise which genes are driving the enrichment within each pathway. There are problematic cases where a single gene is driving the enrichment results in very small pathways.
 ```{r}
 plot_enrichment_detailed(
   enrichment.results = res.positive,
@@ -646,14 +646,14 @@ MOFAobject@imputed_data$mRNA[[1]][1:5,190:195]
 
 # Building predictive models of clinical outcome
 
-The factors inferred by MOFA can be related to clinical outcomes such as time to treatment or survival times. As this type of data is censored (not for all samples we have already observed the event) we will use [Cox models](http://www.bandolier.org.uk/painres/download/whatis/COX_MODEL.pdf) for this purpose. In a Cox proportional hazards model we model the hazard of an event ocurring (e.g. death or treatment) as a function of some covariates (here the factors). If a factor has a influence on the surivival time or time to treatment it will receive a high absoulte coefficient in the Cox model. In particular:
+The factors inferred by MOFA can be related to clinical outcomes such as time to treatment or survival times. As this type of data is censored (not for all samples we have already observed the event) we will use [Cox models](http://www.bandolier.org.uk/painres/download/whatis/COX_MODEL.pdf) for this purpose. In a Cox proportional hazards model we model the hazard of an event occurring (e.g. death or treatment) as a function of some covariates (here the factors). If a factor has an influence on the survival time or time to treatment it will receive a high absolute coefficient in the Cox model. In particular:
 
 - If the coefficient is positive, samples with large factor values have an increased hazard (of death or treatment) compared to samples with small factor values.
-- If the coefficient is negative, samples with small factor values have an increased hazard compared to samples with a large factor values.
+- If the coefficient is negative, samples with small factor values have an increased hazard compared to samples with large factor values.
 
-To fit these models we will use the `coxph` function in the `survival` package. The survival data is stored in a survival object that contains both the time a sample has been followed up and whether the event has occured (as 0,1).
+To fit these models we will use the `coxph` function in the `survival` package. The survival data is stored in a survival object that contains both the time a sample has been followed up and whether the event has occurred (as 0,1).
 
-Let's take time to treatment as an example here. The sample metadata contains the follow-up times per sample in years in the column `TTT`, and the column `treatedAfter` indicated whether a treatment occured.
+Let's take time to treatment as an example here. The sample metadata contains the follow-up times per sample in years in the column `TTT`, and the column `treatedAfter` indicated whether a treatment occurred.
 
 ### Fit Cox models
 
@@ -669,7 +669,7 @@ fit <- coxph(SurvObject ~ Z)
 fit
 ```
 
-We can see that several factors have a significant association to time to treatment. For example, Factor 1 has a negative coefficient. Samples with low factor values have an increased hazard compared to samples with a large factor values.
+We can see that several factors have a significant association to time to treatment. For example, Factor 1 has a negative coefficient. Samples with low factor values have an increased hazard compared to samples with large factor values.
 
 ### Plot Hazard ratios
 
