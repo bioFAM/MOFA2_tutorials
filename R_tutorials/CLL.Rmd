@@ -136,7 +136,7 @@ Train the model: this should take ~2min
 ```{r, message=FALSE, warning=FALSE}
 # NOTE: The software has evolved since the original publication and the results will not be 100% identical to the original publication, please use the pretrained model if you are running through the vignette for the fist time
 # MOFAobject <- run_mofa(MOFAobject, outfile="/Users/ricard/Downloads/MOFA2_CLL.hdf5")
-# saveRDS(MOFAobject,"MOFA2_CLL.hdf5")
+# saveRDS(MOFAobject,"MOFA2_CLL.rds")
 
 # Load precomputed model
 MOFAobject <- readRDS(url("http://ftp.ebi.ac.uk/pub/databases/mofa/cll_vignette/MOFA2_CLL.rds"))
